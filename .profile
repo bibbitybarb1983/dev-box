@@ -22,5 +22,15 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 pass() {
+	# online manual for lpass
+	# https://lastpass.github.io/lastpass-cli/lpass.1.html
+
+	lpass ls > /dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		echo "logging in..."
+		export LPASS_DISABLE_PINENTRY=1
+		lpass login jtougas@stack8.com < ~/.lpasspwd > /dev/null
+	fi
+
     lpass show $(lpass ls | fzf | grep -oP "id: (\K\d+)")
 }
